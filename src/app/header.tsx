@@ -22,11 +22,13 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-16 md:h-20 border-b border-neutral-200/70 bg-white/80 backdrop-blur">
+    <header className="fixed inset-x-0 top-0 z-50 h-16 md:h-20 border-b border-neutral-200/70 
+          bg-background/80 text-foreground
+          backdrop-blur">
       <div className="mx-auto max-w-6xl px-4 h-full flex items-center justify-between">
         <Link href="/" className="font-semibold tracking-tight">MyBrand</Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm">
+        <nav className="hidden md:flex items-center gap-6 text-sm ">
           <a href="#features" className="link hover:opacity-80">Design Process</a>
           <a href="#pricing" className="link hover:opacity-80">Materials</a>
           <a href="#faq" className="link hover:opacity-80">Manufacturing Processes</a>
