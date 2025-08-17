@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import Header from './header';
+import {pool, testConnection} from "@/app/lib/db";
 
 export const metadata: Metadata = {
   title: 'Landing – MyBrand',
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  //testConnection();
   return (
     <html lang="en">
       {/* Fallback header height variables (synced by Header on mount) */}
