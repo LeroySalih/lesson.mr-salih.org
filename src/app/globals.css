@@ -32,6 +32,7 @@ body {
 
 
 
+
 @layer utilities {
   .bg-graph-paper {
     background-color: #cce4f730;
@@ -39,6 +40,16 @@ body {
       linear-gradient(transparent 19px, rgba(0, 102, 204, 0.10) 19px, rgba(0, 102, 204, 0.10) 20px),
       linear-gradient(90deg, transparent 19px, rgba(0, 102, 204, 0.10) 19px, rgba(0, 102, 204, 0.10) 20px);
     background-size: 20px 20px; /* crisp lines */
+  }
+
+
+  .link {
+    cursor: pointer;
+  }
+
+  .link:hover {
+    cursor: pointer;
+    text-decoration: underline;
   }
 
 }

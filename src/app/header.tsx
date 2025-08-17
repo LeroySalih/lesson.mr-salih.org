@@ -27,9 +27,10 @@ export default function Header() {
         <Link href="/" className="font-semibold tracking-tight">MyBrand</Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          <a href="#features" className="hover:opacity-80">Features</a>
-          <a href="#pricing" className="hover:opacity-80">Pricing</a>
-          <a href="#faq" className="hover:opacity-80">FAQ</a>
+          <a href="#features" className="link hover:opacity-80">Design Process</a>
+          <a href="#pricing" className="link hover:opacity-80">Materials</a>
+          <a href="#faq" className="link hover:opacity-80">Manufacturing Processes</a>
+          <a href="#faq" className="link hover:opacity-80">Projects</a>
         </nav>
 
         <a
