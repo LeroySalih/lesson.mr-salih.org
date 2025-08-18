@@ -1,14 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect } from 'react';
-
+import { useEffect, useState } from 'react';
+import { CollectionSchema, CollectionsSchema, Collections } from '@/actions/collections/types';
+import {Units} from "@/actions/units/types";
 /**
  * We set a CSS variable --header-h so the rest of the page
  * can size itself exactly to the remaining viewport height.
  * Adjust the height classes (h-16 md:h-20) to your taste.
  */
-export default function Header() {
+export default function Header({units}: {units: Units}) {
+
   // If you need JS to keep the var in sync on resize (usually not needed),
   // you can measure here. For now we just mirror the Tailwind heights.
   useEffect(() => {
@@ -29,10 +31,9 @@ export default function Header() {
         <Link href="/" className="font-semibold tracking-tight">MyBrand</Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm ">
-          <a href="#features" className="link hover:opacity-80">Design Process</a>
-          <a href="#pricing" className="link hover:opacity-80">Materials</a>
-          <a href="#faq" className="link hover:opacity-80">Manufacturing Processes</a>
-          <a href="#faq" className="link hover:opacity-80">Projects</a>
+          {
+            units.map((u, i) => <Link key={u.unit_id} href={`/${u.unit_id}`} className="link hover:opacity-80">{u.title}</Link>)
+          }          
         </nav>
 
         <a

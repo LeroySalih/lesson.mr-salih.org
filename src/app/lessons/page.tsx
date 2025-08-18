@@ -1,9 +1,10 @@
-import { getLessons } from "@/actions/get-lessons";
+import { getLessons } from "@/actions/lessons/get-lessons";
 import { getLesson } from "@/actions/get-lesson";
 import React from "react";
 
 import Link from 'next/link';
 
+import {LessonHeader} from "./lesson-header";
 
 const Page = async () => {
 

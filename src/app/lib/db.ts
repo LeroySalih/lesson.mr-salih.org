@@ -1,4 +1,4 @@
-import pg from "pg";
+import pg, { Result } from "pg";
 import {z} from "zod";
 
 export const dbConnection = {
@@ -76,39 +76,20 @@ export async function execSql<S extends z.ZodTypeAny>(
   params: unknown[],
   schema: S
 ): Promise<ExecResult<z.output<S>>> {
+  let result = null;
+
   try {
 
-    const result = await pool.query(sql, params);     // rows: unknown[]
+    result = await pool.query(sql, params);     // rows: unknown[]
 
     const value = result.rows;
-    
-    if (typeof value === 'object' && value !== null) {
-      if (Array.isArray(value)) {
-          console.log('It is an array');
-      } else {
-          console.log('It is an object');
-      }
-    } else {
-        console.log('Not an object or array');
-    }
-
-    
-    const parsed = schema.array().parse(result.rows);
-  /*
-    if (!parsed.success) {
-      console.error("Error: execSql parse error", parsed.error.message);
-      console.error("result.rows returned:", result.rows);
         
-      return { data: null, error: parsed.error.message };
-    }
-
-    console.log("INFO:execSql", parsed.data);
-
-    */
+    const parsed = schema.array().parse(result.rows);
 
     return { data: result.rows, error: null };
   } catch (err) {
     console.error("Error: execSql", (err as Error).message);
+    console.error(result?.rows);
     return { data: null, error: (err as Error).message };
   }
 }

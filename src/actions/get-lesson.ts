@@ -1,5 +1,5 @@
 import { execOne } from "@/app/lib/db";
-import { Lesson, LessonSchema } from "./types";
+import { Lesson, LessonSchema } from "./lessons/types";
 
 export const getLesson = async (lesson_id: string) => {
 

@@ -4,7 +4,7 @@
 :root {
   --background: #cce4f730;               /* grid paper bg */
   --foreground: #171717;
-  --graph-line: rgba(0, 102, 204, 0.10); /* grid line color */
+  --graph-line: rgba(0, 102, 204, 0.01); /* grid line color */
 }
 
 @media (prefers-color-scheme: dark) {
