@@ -30,11 +30,16 @@ export default function Header({units}: {units: Units}) {
       <div className="mx-auto max-w-6xl px-4 h-full flex items-center justify-between">
         <Link href="/" className="font-semibold tracking-tight">MyBrand</Link>
 
+        <div>
+          <div className="border-b-[0.5px] border-neutral-500">
+            Yr 10 DT
+          </div>
         <nav className="hidden md:flex items-center gap-6 text-sm ">
           {
             units.map((u, i) => <Link key={u.unit_id} href={`/${u.unit_id}`} className="link hover:opacity-80">{u.title}</Link>)
           }          
         </nav>
+        </div>
 
         <a
           href="#cta"
