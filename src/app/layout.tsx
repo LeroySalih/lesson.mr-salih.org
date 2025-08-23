@@ -25,6 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en">
       {/* Fallback header height variables (synced by Header on mount) */}
       <head>
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         <style>{`
         :root { --header-h: 64px; }
         @media (min-width: 768px) { :root { --header-h: 80px; } }
