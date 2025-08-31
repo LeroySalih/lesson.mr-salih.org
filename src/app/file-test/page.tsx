@@ -5,25 +5,22 @@ import ClientOnly from "./clientOnly";
 import { getFiles } from "@/actions/file";
 import { DownloadButton } from "./down-load-btn";
 import { DownloadAllButton } from "./down-load-all-btn";
+import Downloader from "./downloader";
 
 
 const FilePage = async () => {
+    const clientPath = "activity/pupilId";
 
     const {data: files, error} = await getFiles();
 
     return <div><div>File Test Page</div>
-        {
-            files.map((f,i) => <div key={f}><DownloadButton name={f}/></div>)
-        }
-
-        <DownloadAllButton />
+        
+        <Downloader path={clientPath}/>
                 
         <ClientOnly>
-            <Uploader/>
+            <Uploader path={clientPath}/>
         </ClientOnly>
-        <pre>
-            {JSON.stringify(files, null, 2)}
-        </pre>
+        
     </div>
 }
 

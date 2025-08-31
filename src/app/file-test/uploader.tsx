@@ -2,8 +2,14 @@
 
 import { useState } from 'react';
 import { uploadFile } from '@/actions/file';
+//import { toast } from "sonner";
 
-export default function Uploader() {
+type UploaderProps = {
+  path: string
+}
+
+export default function Uploader({path}:UploaderProps) {
+
   const [status, setStatus] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -13,6 +19,9 @@ export default function Uploader() {
         setSubmitting(true);
         setStatus('Uploading…');
         try {
+          
+          fd.set("path", path);
+
           const result = await uploadFile(fd);
           setStatus(`Uploaded ${result.filename} (${result.bytes} bytes)`);
           // `this` is not the form here, so reset via element id or ref:

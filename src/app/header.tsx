@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { CollectionSchema, CollectionsSchema, Collections } from '@/actions/collections/types';
 import {Units} from "@/actions/units/types";
+import {Courses} from "@/actions/courses/types";
+
 /**
  * We set a CSS variable --header-h so the rest of the page
  * can size itself exactly to the remaining viewport height.
  * Adjust the height classes (h-16 md:h-20) to your taste.
  */
-export default function Header({units}: {units: Units}) {
+export default function Header({courses, units}: {courses: Courses, units: Units}) {
 
   // If you need JS to keep the var in sync on resize (usually not needed),
   // you can measure here. For now we just mirror the Tailwind heights.

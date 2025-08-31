@@ -5,13 +5,14 @@ import path from 'node:path';
 import mime from 'mime';
 import { PassThrough } from 'node:stream';
 import archiver from 'archiver';
+import { revalidatePath } from 'next/cache';
 
 
 const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
 /** Ensure the upload directory exists */
-async function ensureUploadDir() {
-  await fs.mkdir(UPLOAD_DIR, { recursive: true });
+async function ensureUploadDir(clientPath: string) {
+  await fs.mkdir(path.join(UPLOAD_DIR,clientPath), { recursive: true });
 }
 
 /** Avoid path traversal and normalize the filename */
@@ -72,16 +73,19 @@ async function versionExistingIfNeeded(targetPath: string) {
  *   await uploadFile(formData, 'optional-new-name.ext'); // or omit the second arg to keep original name
  */
 export async function uploadFile(formData: FormData, asName?: string) {
-  await ensureUploadDir();
-
+  
+  const clientPath:string= formData.get('path') as string|| "";
   const file = formData.get('file');
+
+  await ensureUploadDir(clientPath);
+
   if (!(file instanceof File)) {
     throw new Error('No file provided under FormData key "file".');
   }
 
   const originalName = safeBaseName(file.name);
   const filename = safeBaseName(asName || originalName);
-  const targetPath = path.join(UPLOAD_DIR, filename);
+  const targetPath = path.join(UPLOAD_DIR, clientPath, filename);
 
   // If a file with this name exists, version it (_v1, _v2, ...)
   await versionExistingIfNeeded(targetPath);
@@ -90,6 +94,8 @@ export async function uploadFile(formData: FormData, asName?: string) {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   await fs.writeFile(targetPath, buffer);
+
+  revalidatePath('file-test');
 
   return {
     ok: true as const,
@@ -115,8 +121,8 @@ export async function uploadFile(formData: FormData, asName?: string) {
  *   a.remove();
  *   URL.revokeObjectURL(url);
  */
-export async function downloadFile(requestedName: string) {
-  await ensureUploadDir();
+export async function downloadFile(requestedName: string, clientPath: string ="") {
+  await ensureUploadDir(clientPath);
   const filename = safeBaseName(requestedName);
   const filePath = path.join(UPLOAD_DIR, filename);
 
@@ -160,8 +166,8 @@ function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
  *
  * Throws if there are no files or on I/O errors.
  */
-export async function downloadAllAsZip(zipName = 'all-files.zip') {
-  await ensureUploadDir();
+export async function downloadAllAsZip( zipName = 'all-files.zip', clientpath:string="") {
+  await ensureUploadDir(clientpath);
 
   // List regular files (hide dotfiles)
   const entries = await fs.readdir(UPLOAD_DIR, { withFileTypes: true });
@@ -201,11 +207,11 @@ export async function downloadAllAsZip(zipName = 'all-files.zip') {
 
 // Reuse your existing UPLOAD_DIR and ensureUploadDir()
 
-export async function getFiles(): Promise<{ data: string[]; error: string }> {
+export async function getFiles(clientPath: string = ""): Promise<{ data: string[]; error: string }> {
   try {
-    await ensureUploadDir();
+    await ensureUploadDir(clientPath);
 
-    const entries = await fs.readdir(UPLOAD_DIR, { withFileTypes: true });
+    const entries = await fs.readdir(path.join(UPLOAD_DIR, clientPath), { withFileTypes: true });
 
     const files = entries
       .filter((d) => d.isFile() && !d.name.startsWith('.')) // hide dotfiles like .DS_Store

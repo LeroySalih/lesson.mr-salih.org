@@ -5,6 +5,7 @@ import {pool, testConnection} from "@/app/lib/db";
 import { getCollections } from '@/actions/collections/get-collections';
 import { getUnpackedSettings } from 'http2';
 import { getUnitsForCourse } from '@/actions/units/get-units-for-course';
+import { getCourses } from '@/actions/courses/getCourses';
 
 export const metadata: Metadata = {
   title: 'Landing – MyBrand',
@@ -15,11 +16,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   
   //const collections = getCollections();
   const courseId = '50d1946e-f7d8-45ff-b076-98ad565060ba' // Yr1- Design and Technology;
-  const {data:units, error} = await getUnitsForCourse(courseId);
+  const {data:units, error: unitsError} = await getUnitsForCourse(courseId);
+  const {data:courses, error: coursesError} = await getCourses();
 
-  console.log(units)
-
-
+  if (unitsError || coursesError){
+    return <div>Error!{unitsError} {coursesError}</div>
+  }
+  
   //testConnection();
   return (
     <html lang="en">
@@ -35,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         bg-graph-paper
       
       ">
-        <Header units={units}/>
+        {courses && units && <Header courses={courses} units={units}/>}
         <main className="pt-[var(--header-h)] bg-graph-paper">
         {children}
         </main>
